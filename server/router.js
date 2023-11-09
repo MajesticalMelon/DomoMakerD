@@ -3,7 +3,7 @@ const multer = require('multer');
 const controllers = require('./controllers');
 const mid = require('./middleware');
 
-const upload = multer({ dest: 'assets/uploads' });
+const upload = multer({ dest: './uploads' });
 
 const router = (app) => {
   app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
