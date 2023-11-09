@@ -11,7 +11,6 @@ const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 
-const multer = require('multer');
 const router = require('./router.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
@@ -39,7 +38,6 @@ redisClient.connect().then(() => {
   app.use(compression());
   app.use(bodyparser.urlencoded({ extended: true }));
   app.use(bodyparser.json());
-  app.use(multer({ dest: '../uploads/' }).single('image'));
 
   app.use(session({
     key: 'sessionId',
