@@ -48,33 +48,35 @@ const getDomos = async (req, res) => {
 };
 
 // https://stackoverflow.com/questions/15772394/how-to-upload-display-and-save-images-using-node-js-and-express
-const handleError = (err, res) => {
-  console.log(err);
-  res.status(500);
-};
-
-// https://stackoverflow.com/questions/15772394/how-to-upload-display-and-save-images-using-node-js-and-express
 const uploadImage = async (req, res) => {
-  if (!req.file) return;
+  if (!req.file) return res.status(500);
 
   const tempPath = req.file.path;
   const targetPath = path.join(__dirname, `../uploads/${req.file.originalname}`);
+  const error = { status: 0, message: '' };
 
   if (path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg') {
     fs.rename(tempPath, targetPath, (err) => {
-      if (err) return handleError(err, res);
-
-      return res
-        .status(200);
+      if (err) {
+        error.status = 500;
+        error.message = `Error uploading image: ${err}`;
+      }
     });
-  } else {
-    fs.unlink(tempPath, (err) => {
-      if (err) return handleError(err, res);
-
-      return res
-        .status(403);
-    });
+    return res.json({ path: targetPath });
   }
+
+  fs.unlink(tempPath, (err) => {
+    if (err) {
+      error.status = 500;
+      error.message = `Image is not of type PNG or JPG: ${err}`;
+    }
+  });
+
+  if (error.status !== 0) {
+    return res.status(error.status).json({ error: error.message });
+  }
+
+  return res.status(403);
 };
 
 module.exports = {

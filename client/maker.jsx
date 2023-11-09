@@ -35,14 +35,20 @@ const loadDomosFromServer = async () => {
   domosRoot.render(<DomoList domos={data.domos} />);
 };
 
-const handleDomo = (e) => {
+const handleDomo = async (e) => {
   e.preventDefault();
   helper.hideError();
 
-  e.target.querySelector('#imageForm').submit();
-
   const name = e.target.querySelector('#domoName').value;
   const age = e.target.querySelector('#domoAge').value;
+  const image = e.target.querySelector('#domoImage').files[0];
+
+  const data = new FormData();
+  data.append('image', image);
+
+  const response = await fetch('/upload', { method: 'POST', body: data });
+  const path = await response.json();
+  console.log(path);
 
   if (!name || !age) {
     helper.handleError('All fields are required!');
@@ -76,15 +82,13 @@ const DomoForm = (props) => (
     </div>
 
     <div>
-      <form id="imageForm" name="imageForm" action="/upload" method="POST" encType="multipart/form-data">
-        <label htmlFor="image">Image: </label>
-        <input
-          type="file"
-          id="domoImage"
-          name="image"
-          accept="image/png, image/jpeg"
-        />
-      </form>
+      <label htmlFor="image">Image: </label>
+      <input
+        type="file"
+        id="domoImage"
+        name="image"
+        accept="image/png, image/jpeg"
+      />
     </div>
 
     <input className="makeDomoSubmit" type="submit" value="Make Domo" />
