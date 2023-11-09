@@ -2,6 +2,8 @@ const multer = require('multer');
 const controllers = require('./controllers');
 const mid = require('./middleware');
 
+const upload = multer({ dest: 'assets/uploads' });
+
 const router = (app) => {
   app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
 
@@ -15,7 +17,7 @@ const router = (app) => {
   app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.Domo.makeDomo);
 
-  app.post('/upload', mid.requiresLogin, controllers.Domo.multerTest);
+  app.post('/upload', mid.requiresLogin, upload.single('image'), controllers.Domo.multerTest);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
