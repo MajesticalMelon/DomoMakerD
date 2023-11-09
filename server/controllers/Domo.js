@@ -42,6 +42,10 @@ const getDomos = async (req, res) => {
   }
 };
 
+const multerTest = (req, res) => {
+  console.log(req.file);
+};
+
 module.exports = {
   makerPage,
   makeDomo,
