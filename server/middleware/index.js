@@ -1,3 +1,7 @@
+const multer = require('multer');
+
+const upload = multer({ dest: '../uploads/' });
+
 const requiresLogin = (req, res, next) => {
   if (!req.session.account) {
     return res.redirect('/');
@@ -26,7 +30,7 @@ const bypassSecure = (req, res, next) => {
   next();
 };
 
-module.exports = { requiresLogin, requiresLogout };
+module.exports = { requiresLogin, requiresLogout, upload };
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.requiresSecure = requiresSecure;

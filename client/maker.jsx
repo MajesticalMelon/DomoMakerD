@@ -14,7 +14,7 @@ const DomoList = (props) => {
 
   const domoNodes = props.domos.map((domo) => (
     <div key={domo._id} className="domo">
-      <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
+      <img src={domo.image || '/assets/img/domoface.jpeg'} alt="domo face" className="domoFace" />
       <h3 className="domoName">Name: {domo.name}</h3>
       <h3 className="domoAge">Age: {domo.age}</h3>
     </div>
@@ -39,6 +39,8 @@ const handleDomo = (e) => {
   e.preventDefault();
   helper.hideError();
 
+  e.target.querySelector('#imageForm').submit();
+
   const name = e.target.querySelector('#domoName').value;
   const age = e.target.querySelector('#domoAge').value;
 
@@ -56,17 +58,34 @@ const DomoForm = (props) => (
   <form
     id="domoForm"
     name="domoForm"
-    onSubmit={handleDomo}
+    onSubmit={(e) => { handleDomo(e); }}
     action="/maker"
     method="POST"
     className="domoForm"
+    style={{ display: 'flex' }}
     {...props}
   >
-    <label htmlFor="name">Name: </label>
-    <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+    <div>
+      <label htmlFor="name">Name: </label>
+      <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+    </div>
 
-    <label htmlFor="age">Age: </label>
-    <input id="domoAge" type="number" min="0" name="age" />
+    <div>
+      <label htmlFor="age">Age: </label>
+      <input id="domoAge" name="age" type="number" min="0" />
+    </div>
+
+    <div>
+      <form id="imageForm" name="imageForm" action="/upload" method="POST" encType="multipart/form-data">
+        <label htmlFor="image">Image: </label>
+        <input
+          type="file"
+          id="domoImage"
+          name="image"
+          accept="image/png, image/jpeg"
+        />
+      </form>
+    </div>
 
     <input className="makeDomoSubmit" type="submit" value="Make Domo" />
   </form>
