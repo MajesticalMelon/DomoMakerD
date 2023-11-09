@@ -50,4 +50,5 @@ module.exports = {
   makerPage,
   makeDomo,
   getDomos,
+  multerTest,
 };

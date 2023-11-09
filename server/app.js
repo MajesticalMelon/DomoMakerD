@@ -10,7 +10,6 @@ const helmet = require('helmet');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
-const multer = require('multer');
 
 const router = require('./router.js');
 
