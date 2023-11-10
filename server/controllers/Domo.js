@@ -56,6 +56,8 @@ const uploadImage = async (req, res) => {
   }
   const error = { status: 0, message: '' };
 
+  console.log(__dirname);
+
   if (path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg') {
     fs.rename(tempPath, targetPath, (err) => {
       if (err) {
