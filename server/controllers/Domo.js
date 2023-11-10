@@ -20,8 +20,6 @@ const makeDomo = async (req, res) => {
     image: req.body.image,
   };
 
-  console.log(domoData);
-
   try {
     const newDomo = new Domo(domoData);
     await newDomo.save();
@@ -54,7 +52,7 @@ const uploadImage = async (req, res) => {
   const tempPath = req.file.path;
   let targetPath = path.join(__dirname, `../../hosted/uploads/${req.file.originalname}`);
   if (process.env.NODE_ENV === 'production') {
-    targetPath = `assets/uploads/${req.file.originalname}`;
+    targetPath = path.join(__dirname, `assets/uploads/${req.file.originalname}`);
   }
   const error = { status: 0, message: '' };
 
