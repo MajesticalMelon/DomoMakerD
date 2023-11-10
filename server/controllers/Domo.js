@@ -52,7 +52,10 @@ const uploadImage = async (req, res) => {
   if (!req.file) return res.status(500);
 
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, `../../hosted/uploads/${req.file.originalname}`);
+  let targetPath = path.join(__dirname, `../../hosted/uploads/${req.file.originalname}`);
+  if (process.env.NODE_ENV === 'production') {
+    targetPath = `assets/uploads/${req.file.originalname}`;
+  }
   const error = { status: 0, message: '' };
 
   if (path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg') {
