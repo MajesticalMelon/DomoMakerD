@@ -38,7 +38,7 @@ const makeDomo = async (req, res) => {
 const getDomos = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
-    const docs = await Domo.find(query).select('name age').lean().exec();
+    const docs = await Domo.find(query).select('name age image').lean().exec();
 
     return res.json({ domos: docs });
   } catch (err) {
@@ -52,7 +52,7 @@ const uploadImage = async (req, res) => {
   if (!req.file) return res.status(500);
 
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, `../uploads/${req.file.originalname}`);
+  const targetPath = path.join(__dirname, `../../hosted/uploads/${req.file.originalname}`);
   const error = { status: 0, message: '' };
 
   if (path.extname(req.file.originalname).toLowerCase() === '.png' || path.extname(req.file.originalname).toLowerCase() === '.jpg') {
@@ -62,7 +62,7 @@ const uploadImage = async (req, res) => {
         error.message = `Error uploading image: ${err}`;
       }
     });
-    return res.json({ path: targetPath });
+    return res.json({ path: `assets/uploads/${req.file.originalname}` });
   }
 
   fs.unlink(tempPath, (err) => {

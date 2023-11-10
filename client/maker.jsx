@@ -47,15 +47,14 @@ const handleDomo = async (e) => {
   data.append('image', image);
 
   const response = await fetch('/upload', { method: 'POST', body: data });
-  const path = await response.json();
-  console.log(path);
+  const json = await response.json();
 
   if (!name || !age) {
     helper.handleError('All fields are required!');
     return false;
   }
 
-  helper.sendPost(e.target.action, { name, age }, loadDomosFromServer);
+  helper.sendPost(e.target.action, { name, age, image: json.path }, loadDomosFromServer);
 
   return false;
 };
