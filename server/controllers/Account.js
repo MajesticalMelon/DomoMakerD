@@ -59,35 +59,9 @@ const signup = async (req, res) => {
   }
 };
 
-// https://stackoverflow.com/questions/15772394/how-to-upload-display-and-save-images-using-node-js-and-express
-const uploadImage = async (req, res) => {
-  if (!req.body.image || !req.body.name) return res.status(500).json({ error: 'Missing name or base64 image string!' });
-
-  try {
-    req.session.account.imageKeys.push(req.body.name);
-    req.session.account.images.push(req.body.image);
-    return res.status(200).json({ imageName: req.body.name });
-  } catch (ex) {
-    return res.status(500).json({ error: ex });
-  }
-};
-
-const getImage = async (req, res) => {
-  if (!req.params.key) return res.status(500).json({ error: 'Missing image key!' });
-
-  try {
-    const index = req.session.account.imageKeys.findIndex((key) => key === req.params.key);
-    return res.status(200).json({ image: req.session.account.images[index] });
-  } catch (ex) {
-    return res.status(500).json({ error: ex });
-  }
-};
-
 module.exports = {
   loginPage,
   login,
   logout,
   signup,
-  uploadImage,
-  getImage,
 };
