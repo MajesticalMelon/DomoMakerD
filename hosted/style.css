@@ -59,7 +59,6 @@ nav:nth-child(1) {
 }
 
 .domoForm label {
-    display: inline-block;
     width: 75px;
     margin-left: 10px;
     font-size: 1.2em;
