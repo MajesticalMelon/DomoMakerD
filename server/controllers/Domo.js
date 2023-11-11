@@ -43,8 +43,21 @@ const getDomos = async (req, res) => {
   }
 };
 
+const deleteDomo = async (req, res) => {
+  if (!req.params.name || !req.params.age) return res.status(500).json({ error: 'Name and age are required fields!' });
+
+  try {
+    await Domo.deleteOne({ name: req.params.name, age: req.params.age });
+    const domos = await Domo.find({ owner: req.session.account._id });
+    return res.status(200).json({ domos });
+  } catch (ex) {
+    return res.status(404).json({ error: 'Could not find Domo to delete!' });
+  }
+};
+
 module.exports = {
   makerPage,
   makeDomo,
   getDomos,
+  deleteDomo,
 };

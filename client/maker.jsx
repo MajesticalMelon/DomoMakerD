@@ -6,17 +6,30 @@ const domosRoot = ReactDOM.createRoot(document.getElementById('domos'));
 const makeRoot = ReactDOM.createRoot(document.getElementById('makeDomo'));
 
 const DomoList = (props) => {
-  if (props.domos.length === 0) {
+  const [domos, setDomos] = React.useState([]);
+
+  React.useEffect(() => {
+    setDomos(props.domos);
+  }, [props.domos]);
+
+  if (domos.length === 0) {
     return (<div className="domoList">
       <h3 className="emptyDomo">No Domos Yet!</h3>
     </div>);
   }
 
-  const domoNodes = props.domos.map((domo) => (
+  const domoNodes = domos.map((domo) => (
     <div key={domo._id} className="domo">
       <img src={ domo.image || '/assets/img/domoface.jpeg'} alt="domo face" className="domoFace" />
       <h3 className="domoName">Name: {domo.name}</h3>
       <h3 className="domoAge">Age: {domo.age}</h3>
+      <button className="domoDelete" onClick={() => {
+        fetch(`/delete/${domo.name}/${domo.age}`, { method: 'DELETE' }).then((res) => {
+          res.json().then((data) => {
+            setDomos(data.domos);
+          });
+        });
+      }}><img src="/assets/img/cross.svg" alt="domo delete" className="domoDelete" /></button>
     </div>
   ));
 
