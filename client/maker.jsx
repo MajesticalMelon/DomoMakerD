@@ -63,7 +63,6 @@ const handleDomo = async (e) => {
 
   const reader = new FileReader();
   reader.onloadend = async () => {
-    console.log('RESULT', reader.result);
     await fetch(
       '/upload',
       {
